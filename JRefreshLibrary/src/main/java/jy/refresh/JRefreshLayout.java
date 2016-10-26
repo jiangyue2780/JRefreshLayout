@@ -135,12 +135,7 @@ public class JRefreshLayout extends ViewGroup implements NestedScrollingParent, 
         }
         int paddingLeft = getPaddingLeft();
         int paddingTop = getPaddingTop();
-        log("重绘了 来了 来了来了来了了" + mCurrentContentOffsetTop + "，" + mHeaderHeight + "，" + (mState == STATE_PULL_REFRESHING));
-        //防止在刷新状态控件重绘导致界面位置不正确
-//        int offsetTop = mState == STATE_PULL_REFRESHING ? mTriggerDistance : 0;
         if (mHeaderView != null) {
-            log("t:" + (mCurrentContentOffsetTop - mHeaderHeight) + ", b:" + mCurrentContentOffsetTop);
-            log("tt:" + (mCurrentContentOffsetTop - mHeaderHeight) + ", bb:" + (paddingTop + mHeaderHeight));
             mHeaderView.layout(getPaddingLeft(), mCurrentContentOffsetTop - mHeaderHeight, paddingLeft + mHeaderView.getMeasuredWidth(), mCurrentContentOffsetTop + 1);
         }
         if (mContentView != null) {
@@ -210,7 +205,6 @@ public class JRefreshLayout extends ViewGroup implements NestedScrollingParent, 
                 mStartMotionY = MotionEventCompat.getY(event, 0);
                 break;
             case MotionEvent.ACTION_MOVE:
-                log("move");
                 pointerIndex = MotionEventCompat.findPointerIndex(event, mActivePointerId);
                 if (pointerIndex < 0) {
                     Log.e(LOG_TAG, "Got ACTION_MOVE event but have an invalid active pointer id.");
@@ -296,7 +290,6 @@ public class JRefreshLayout extends ViewGroup implements NestedScrollingParent, 
         @Override
         protected void applyTransformation(float interpolatedTime, Transformation t) {
             int targetContentTop = (mFrom + (int) (-mFrom * interpolatedTime));
-            log("aaaninini");
             offsetTops(targetContentTop);
         }
     };
@@ -309,7 +302,6 @@ public class JRefreshLayout extends ViewGroup implements NestedScrollingParent, 
 
         @Override
         public void onAnimationEnd(Animation animation) {
-            log("aaaninini:onAnimationEnd");
             mProgressingAnimationCount--;
             refreshState(STATE_IDLE);
         }
@@ -327,7 +319,6 @@ public class JRefreshLayout extends ViewGroup implements NestedScrollingParent, 
 
         @Override
         public void onAnimationEnd(Animation animation) {
-            log("aaaninini:onAnimationEnd");
             mProgressingAnimationCount--;
             refreshState(STATE_REFRESH_COMPLETED);
         }
@@ -372,7 +363,6 @@ public class JRefreshLayout extends ViewGroup implements NestedScrollingParent, 
             return;
         }
         mCurrentContentOffsetTop = (int) targetContentTop;
-        log("tttttt:" + mCurrentContentOffsetTop);
 
         int targetHeaderTop = (int) (targetContentTop - mHeaderHeight);
         int offsetContent = (int) (targetContentTop - mContentView.getTop());
@@ -495,7 +485,6 @@ public class JRefreshLayout extends ViewGroup implements NestedScrollingParent, 
 
     @Override
     public void onNestedPreScroll(View target, int dx, int dy, int[] consumed) {
-        log("onNestedPreScroll");
         // If we are in the middle of consuming, a scroll, then we want to move the spinner back up
         // before allowing the list to scroll
         if (dy > 0 && mTotalUnconsumed > 0) {
@@ -546,7 +535,6 @@ public class JRefreshLayout extends ViewGroup implements NestedScrollingParent, 
     @Override
     public void onNestedScroll(final View target, final int dxConsumed, final int dyConsumed,
                                final int dxUnconsumed, final int dyUnconsumed) {
-        log("onNestedScroll");
         // Dispatch up to the nested parent first
         dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed,
             mParentOffsetInWindow);
@@ -663,7 +651,6 @@ public class JRefreshLayout extends ViewGroup implements NestedScrollingParent, 
 
     public void setRefreshCompleted() {
         animateOffsetToStartPosition(false);
-        log("animateOffsetToStartPosition:setRefreshCompleted");
     }
 
     public void setOnRefreshListener(OnRefreshListener listener) {
