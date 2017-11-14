@@ -1,1 +1,1 @@
-include ':jRefreshLibrary'
+include ':example', ':jRefreshLibrary'
