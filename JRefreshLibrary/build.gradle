@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'maven'
 
 group='com.github.jiangyue2780'
 version = '0.4.5'
